@@ -1,0 +1,20 @@
+[PROJECT]
+Target=dist\default\production\Saat_Termometre_DHT22.X.production.hex
+Processor_Text=PIC16F88
+CCSVersion=5.015
+Compiler=PCM
+[Target Data]
+FileList=dist\default\production\Saat_Termometre_DHT22.X.production.c
+[Directories]
+Include=D:\Applications\PICC\devices\;D:\Applications\PICC\drivers\;D:\Repositories\Saat_Termometre_DHT22.X\Inc\
+[dist\default\production\Saat_Termometre_DHT22.X.production.c]
+Type=4
+[mru-list]
+1=dist\default\production\Saat_Termometre_DHT22.X.production.c
+[Units]
+Count=4
+1=build\default\production\Src\main
+2=build\default\production\Src\hc595
+3=build\default\production\Src\dht22
+4=build\default\production\Src\ds3231
+Link=1

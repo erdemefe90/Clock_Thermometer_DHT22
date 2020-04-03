@@ -1,0 +1,21 @@
+[PROJECT]
+Target=build\default\production\Src\main.hex
+Processor_Text=PIC16F88
+CCSVersion=5.015
+Compiler=PCM
+[Target Data]
+FileList=build\default\production\Src\main.c
+[Directories]
+Include=D:\Applications\PICC\devices\;D:\Applications\PICC\drivers\;C:\Users\erdem\Desktop\Saat_Termometre_DHT22.X\Inc\
+[build\default\production\main.c]
+Type=4
+[mru-list]
+1=build\default\production\Src\main.c
+[build\default\production\Src\main.c]
+Type=4
+[Units]
+Count=1
+1=Src\main (main)
+[Opened Files]
+1=Src\main.c
+2=

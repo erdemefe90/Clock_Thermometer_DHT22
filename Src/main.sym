@@ -1,0 +1,53 @@
+004-005 @READ_PROGRAM_MEMORY8.P1
+004-005 @WRITE_PROGRAM_MEMORY8.P2
+005     _PORTA
+006     _PORTB
+00E     _TMR1L
+00F     _TMR1H
+010     _T1CON
+015     _CCPR1L
+015     CCP_1_LOW
+015     CCP_1
+016     CCP_1_HIGH
+017     _CCP1CON
+077     @SCRATCH
+078     @SCRATCH
+079     @SCRATCH
+07A     @SCRATCH
+085     _TRISA
+086     _TRISB
+09C.6   C1OUT
+09C.7   C2OUT
+10D-10E @READ_PROGRAM_MEMORY8.P1
+10D-10E @WRITE_PROGRAM_MEMORY8.P2
+
+ROM Allocation:
+
+Project Directory:
+    C:\Users\erdem\Desktop\Saat_Termometre_DHT22.X\Src\
+
+Project Files:
+    main.c                                                  [31-Mar-20 21:42  CRC=2623F78B]
+    D:\Applications\PICC\devices\16F88.h                    [12-Kas-13 14:34  CRC=A5FBA8D9]
+    ..\Inc\register_addresses.h                             [31-Mar-20 20:33  CRC=6E6162CF]
+    D:\Applications\PICC\drivers\stdint.h                   [30-Ara-08 09:01  CRC=9F7F640F]
+    ..\Inc\hc595.h                                          [31-Mar-20 21:20  CRC=D872A938]
+
+Source signature=8AE5B9B2
+
+Units:
+    main (main)
+
+Compiler Settings:
+    Processor:      PIC16F88
+    Pointer Size:   16
+    ADC Range:      0-65535
+    Opt Level:      9
+    Short,Int,Long: UNSIGNED: 1,8,16
+    Float,Double:   32,32
+
+Output Files:
+    XREF file:   main.xsym
+    Errors:      main.err
+    Ext Symbols: main.esym
+    Symbols:     main.sym

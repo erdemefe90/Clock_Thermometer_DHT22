@@ -1,0 +1,3 @@
+*** Error 112 "main.c" Line 18(1,1): Function used but not defined:  ... hc595_init 503  SCR=857
+      1 Errors,  0 Warnings.
+Build Failed.

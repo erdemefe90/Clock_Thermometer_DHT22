@@ -9,6 +9,9 @@
 #define DHT22_PORT  PORTB
 #define DHT22_TRIS  TRISB
 #define DHT22_PIN   6
+
+#define GET_TIMER                   (TMR1L)
+#define SET_TIMER(x)                ((TMR1L) = (x))
 /***************************************************************************************************************/
 uint8_t T_Byte1, T_Byte2, RH_Byte1, RH_Byte2, CheckSum;
 /***************************************************************************************************************/
@@ -24,7 +27,7 @@ void dht22_start_signal(void)
 {
     CLR_BIT(DHT22_TRIS, DHT22_PIN);
     CLR_BIT(DHT22_PORT, DHT22_PIN);
-    delay_ms(25); // wait 25 ms
+    delay_ms(25); // wait 25 ms;
     SET_BIT(DHT22_PORT, DHT22_PIN);
     delay_us(30); // wait 30 us
     SET_BIT(DHT22_TRIS, DHT22_PIN);
@@ -32,20 +35,20 @@ void dht22_start_signal(void)
 /***************************************************************************************************************/
 bool dht22_check_response() 
 {
-    set_timer1(0);
+    SET_TIMER(0);
     SET_BIT(T1CON, 0);
 
-    while (!CHECK_BIT(DHT22_PORT, DHT22_PIN) && get_timer1() < 100); // wait until DHT22_PIN becomes high (checking of 80µs low time response)
+    while (!CHECK_BIT(DHT22_PORT, DHT22_PIN) && GET_TIMER < 100); // wait until DHT22_PIN becomes high (checking of 80µs low time response)
 
-    if (get_timer1() > 99) // if response time > 99µS  ==> Response error
+    if (GET_TIMER > 99) // if response time > 99µS  ==> Response error
         return FALSE; // return 0 (Device has a problem with response)
 
     else {
-        set_timer1(0);
+        SET_TIMER(0);
 
-        while (CHECK_BIT(DHT22_PORT, DHT22_PIN) && get_timer1() < 100); // wait until DHT22_PIN becomes low (checking of 80µs high time response)
+        while (CHECK_BIT(DHT22_PORT, DHT22_PIN) && GET_TIMER < 100); // wait until DHT22_PIN becomes low (checking of 80µs high time response)
 
-        if (get_timer1() > 99) // if response time > 99µS  ==> Response error
+        if (GET_TIMER > 99) // if response time > 99µS  ==> Response error
         {
             return FALSE; // return 0 (Device has a problem with response)
         }
@@ -63,21 +66,21 @@ static bool dht22_read_data(uint8_t* dht_data)
     *dht_data = 0;
 
     for (uint8_t i = 0; i < 8; i++) {
-        set_timer1(0);
+        SET_TIMER(0)  ;
 
         while (!CHECK_BIT(DHT22_PORT, DHT22_PIN)) // wait until DHT22_PIN becomes high
-            if (get_timer1() > 100) { // if low time > 100  ==>  Time out error (Normally it takes 50µs)
+            if (GET_TIMER > 100) { // if low time > 100  ==>  Time out error (Normally it takes 50µs)
                 return TRUE;
             }
 
-        set_timer1(0);
+        SET_TIMER(0);
 
         while (CHECK_BIT(DHT22_PORT, DHT22_PIN)) // wait until DHT22_PIN becomes low
-            if (get_timer1() > 100) { // if high time > 100  ==>  Time out error (Normally it takes 26-28µs for 0 and 70µs for 1)
+            if (GET_TIMER > 100) { // if high time > 100  ==>  Time out error (Normally it takes 26-28µs for 0 and 70µs for 1)
                 return TRUE; // return 1 (timeout error)
             }
 
-        if (get_timer1() > 50) // if high time > 50  ==>  Sensor sent 1
+        if (GET_TIMER > 50) // if high time > 50  ==>  Sensor sent 1
             *dht_data |= (1 << (7 - i)); // set bit (7 - i)
     }
     return FALSE; // return 0 (data read OK)

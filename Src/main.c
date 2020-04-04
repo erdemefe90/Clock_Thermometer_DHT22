@@ -80,11 +80,12 @@ void main() {
             else
             {
                 hc595_write_number(humm,0,3);
+                hc595_show_screen();
             }
         } 
         
         ds3231_read_time(&right_time);
-        screen_time();
+        //screen_time();
         
 
     }   

@@ -40,14 +40,29 @@ void screen_time()
 /***************************************************************************************************************/
 void screen_temperature()
 {
-    
+    uint16_t temperature;
+    uint8_t temperature_sign;
+    uint8_t temp;
+    if (dht22_check_response())
+    {
+        dht22_read_temp_hummidity(&temperature_sign, &temperature, &temp);           
+    } 
+#ifndef REMOVE_CALENDAR
+    hc595_write_special_char(temperature_sign ? SPECIAL_CHAR_MINUS : SPECIAL_CHAR_BLANK, 0);
+    hc595_write_number(temperature,1,3);
+    hc595_point(TRUE, 2);
+    hc595_write_special_char(SPECIAL_CHAR_CELC, 4);
+    hc595_write_special_char(SPECIAL_CHAR_C, 5);
+#else
+    hc595_write_number((temperature/10),0,2);
+    hc595_write_special_char(SPECIAL_CHAR_CELC, 2);
+    hc595_write_special_char(SPECIAL_CHAR_C, 3);
+    hc595_point(temperature_sign ? TRUE : FALSE , 3);
+#endif
+    hc595_show_screen();
 }
 /***************************************************************************************************************/
 void main() {
-    uint16_t temp;
-    uint16_t humm;
-    uint8_t sign;
-    bool dht_result;
     setup_timer_0(RTCC_INTERNAL | RTCC_DIV_8 | T0_8_BIT);
     set_timer0(5);
     setup_oscillator(OSC_8MHZ);
@@ -68,24 +83,10 @@ void main() {
             dht22_read_timeout = 0;
             dht22_start_signal();
         }
-        if (dht22_check_response())
-        {
-            dht_result = dht22_read_temp_hummidity(&sign, &temp, &humm);
-            if (FALSE == dht_result)
-            {
-                sign = 0;
-                temp = 0;
-                humm = 0;
-            }
-            else
-            {
-                hc595_write_number(humm,0,3);
-                hc595_show_screen();
-            }
-        } 
+        
         
         ds3231_read_time(&right_time);
-        //screen_time();
+        screen_temperature();
         
 
     }   

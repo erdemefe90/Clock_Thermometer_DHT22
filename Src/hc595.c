@@ -30,7 +30,8 @@
 #define OE_PIN      0
 #define OE_TRIS     TRISB
 /***************************************************************************************************************/
-const uint8_t font[13] = {0xFA, 0x30, 0xD9, 0x79, 0x33, 0x6B, 0xEB, 0x38, 0xFB, 0x7B, 0x1B, 0x81, 0xB7};
+/*                          E	D	C	B	A   DP  F	G   */
+const uint8_t font[13] = {0xFA, 0x30, 0xD9, 0x79, 0x33, 0x6B, 0xEB, 0x38, 0xFB, 0x7B};
 static uint8_t hc595_buff[DIGIT_COUNT];
 /***************************************************************************************************************/
 static void pulse_out();
@@ -59,6 +60,12 @@ void hc595_set_intensity(uint8_t value)
     CCPR1L = (value >> 2);
     CCP1CON &= ~0x30;
     CCP1CON |= (value << 4) & 0x30;
+}
+/***************************************************************************************************************/
+void hc595_write_special_char(uint8_t character, uint8_t pos)
+{
+    hc595_buff[(DIGIT_COUNT - pos) - 1] = character;
+    hc595_write_data();
 }
 /***************************************************************************************************************/
 bool hc595_write_single_digit(uint8_t digit, uint8_t pos)

@@ -10,8 +10,11 @@
 #define DHT22_TRIS  TRISB
 #define DHT22_PIN   6
 
-#define GET_TIMER                   (TMR1L)
-#define SET_TIMER(x)                ((TMR1L) = (x))
+#define GET_TIMER                   (TMR1L | (((uint16_t)TMR1H << 8)))
+#define SET_TIMER(x)                {\
+                                    TMR1L = x;\
+                                    TMR1H = (x >> 8);\
+}
 /***************************************************************************************************************/
 uint8_t T_Byte1, T_Byte2, RH_Byte1, RH_Byte2, CheckSum;
 /***************************************************************************************************************/

@@ -40,7 +40,6 @@ void ds3231_read_time(time_t *time)
     uint8_t *ptr;
 #ifdef REMOVE_CALENDAR
     uint8_t buff[2];
-    uint8_t a;
     const uint8_t start_register = DS3231_REG_MINUTE;
     ds3231_read_bytes(start_register, &buff, sizeof(buff));
     ptr = &buff;

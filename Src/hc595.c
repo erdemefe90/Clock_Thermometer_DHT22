@@ -8,7 +8,7 @@
 /***************************************************************************************************************/
 #use delay(crystal=8000000)
 /***************************************************************************************************************/
-#ifdef REMOVE_CALENDER
+#ifdef REMOVE_CALENDAR
     #define DIGIT_COUNT 4
 #else
     #define DIGIT_COUNT 6
@@ -30,7 +30,8 @@
 #define OE_PIN      0
 #define OE_TRIS     TRISB
 /***************************************************************************************************************/
-const uint8_t font[13] = {0xFA, 0x30, 0xD9, 0x79, 0x33, 0x6B, 0xEB, 0x38, 0xFB, 0x7B, 0x1B, 0x81, 0xB7};
+/*                          E	D	C	B	A   DP  F	G   */
+const uint8_t font[13] = {0xFA, 0x30, 0xD9, 0x79, 0x33, 0x6B, 0xEB, 0x38, 0xFB, 0x7B};
 static uint8_t hc595_buff[DIGIT_COUNT];
 /***************************************************************************************************************/
 static void pulse_out();
@@ -50,8 +51,8 @@ void hc595_init()
     CLR_BIT(LD_PORT, LD_PIN);
     SET_BIT(OE_PORT, OE_PIN);
     
-    setup_timer_2(T2_DIV_BY_16, 24, 1); //200 us overflow, 200 us interrupt
-    setup_ccp1(CCP_PWM);
+    //setup_timer_2(T2_DIV_BY_16, 24, 1); //200 us overflow, 200 us interrupt
+    //setup_ccp1(CCP_PWM);
 }
 /***************************************************************************************************************/
 void hc595_set_intensity(uint8_t value)
@@ -61,21 +62,26 @@ void hc595_set_intensity(uint8_t value)
     CCP1CON |= (value << 4) & 0x30;
 }
 /***************************************************************************************************************/
+void hc595_write_special_char(uint8_t character, uint8_t pos)
+{
+    hc595_buff[(DIGIT_COUNT - pos) - 1] = character;
+    //hc595_write_data();
+}
+/***************************************************************************************************************/
 bool hc595_write_single_digit(uint8_t digit, uint8_t pos)
 {
     uint8_t result = FALSE;
     if (pos < DIGIT_COUNT)
     {
         hc595_buff[(DIGIT_COUNT - pos) - 1] = font[digit];
-        hc595_write_data();
+        //hc595_write_data();
         result = TRUE;
     }
     return result;
 }
 /***************************************************************************************************************/
-void hc595_write_number(uint16_t number, uint8_t from, uint8_t size)
+void hc595_write_number(uint16_t number, uint8_t from, bool zeros, uint8_t size)
 {
-    //uint8_t digit_cnt = count_digit(number);
     uint8_t i;
     uint8_t temp;
     const uint8_t max = DIGIT_COUNT - 1;
@@ -89,12 +95,12 @@ void hc595_write_number(uint16_t number, uint8_t from, uint8_t size)
         }
         else
         {
-            hc595_buff[max - from - i] = font[0];
+            hc595_buff[max - from - i] = zeros ?  font[0] : SPECIAL_CHAR_BLANK;
         }
         
         
     }
-    hc595_write_data();
+    //hc595_write_data();
 }
 /***************************************************************************************************************/
 void hc595_point(bool state, uint8_t position)
@@ -107,7 +113,13 @@ void hc595_point(bool state, uint8_t position)
     {
         hc595_buff[DIGIT_COUNT - 1 - position] &= ~0x04;
     }
+    //hc595_write_data();
+}
+/***************************************************************************************************************/
+void hc595_show_screen()
+{
     hc595_write_data();
+    pulse_out();
 }
 /***************************************************************************************************************/
 static void hc595_write_data()
@@ -124,7 +136,7 @@ static void hc595_write_data()
             CLR_BIT(CLK_PORT, CLK_PIN);
         }
     }
-    pulse_out();
+    //pulse_out();
 }
 /***************************************************************************************************************/
 static void pulse_out()

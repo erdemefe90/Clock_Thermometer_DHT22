@@ -1,0 +1,32 @@
+[PROJECT]
+Target=dist\default\production\Saat_Termometre_DHT22.X.production.hex
+Processor_Text=PIC16F88
+CCSVersion=5.093
+Compiler=PCM
+[Target Data]
+FileList=$linker.c
+[Directories]
+Include=D:\Applications\PICC\devices\;D:\Applications\PICC\drivers\;D:\Repositories\Saat_Termometre_DHT22.X\Inc\
+[dist\default\production\Saat_Termometre_DHT22.X.production.c]
+Type=4
+[mru-list]
+1=dist\default\production\Saat_Termometre_DHT22.X.production.c
+
+[fileformats]
+forcecoff=0
+
+[ProjectLog]
+Days=1
+D1=06-04-2020
+D1_L=2
+D1_L1=[41]Project Opened.
+D1_L2=[106]Project Closed.
+[Units]
+Count=6
+1=Src\main
+2=Src\hc595
+3=Src\dht22
+4=Src\ds3231
+5=Src\led
+6=Src\button
+Link=1

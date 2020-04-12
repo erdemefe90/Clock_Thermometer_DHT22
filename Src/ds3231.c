@@ -38,13 +38,13 @@ void ds3231_init()
 void ds3231_read_time(time_t *time) 
 {
     uint8_t *ptr;
-#ifdef REMOVE_CALENDER
+#ifdef REMOVE_CALENDAR
     uint8_t buff[2];
     const uint8_t start_register = DS3231_REG_MINUTE;
     ds3231_read_bytes(start_register, &buff, sizeof(buff));
     ptr = &buff;
     time->minute = bcd_to_decimal(*ptr++ & 0x7F);
-    time->hour = bcd_to_decimal(*ptr++ & 0x1F);
+    time->hour = bcd_to_decimal(*ptr++ & 0x3F);
 #else
     uint8_t buff[7];
     const uint8_t start_register = DS3231_REG_SECOND;
@@ -52,18 +52,18 @@ void ds3231_read_time(time_t *time)
     ptr = &buff;
     time->second = bcd_to_decimal(*ptr++ & 0x7F);
     time->minute = bcd_to_decimal(*ptr++ & 0x7F);
-    time->hour = bcd_to_decimal(*ptr++ & 0x1F);
+    time->hour = bcd_to_decimal(*ptr++ & 0x3F);
     time->day = bcd_to_decimal(*ptr++ & 0x03);
     time->date = bcd_to_decimal(*ptr++ & 0x3F);
     time->month = bcd_to_decimal(*ptr++ & 0x1F);
-    time->year = bcd_to_decimal(*ptr++ & 0xFF);
+    time->year = bcd_to_decimal(*ptr & 0xFF);
 #endif 
 }
 
 void ds3231_write_time(time_t *time_to_write)
 {
     uint8_t *ptr;
-#ifdef REMOVE_CALENDER
+#ifdef REMOVE_CALENDAR
     uint8_t buff[2];
     const uint8_t start_register = DS3231_REG_MINUTE;
     ptr = &buff;

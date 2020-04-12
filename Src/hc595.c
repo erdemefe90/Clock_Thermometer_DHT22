@@ -51,8 +51,8 @@ void hc595_init()
     CLR_BIT(LD_PORT, LD_PIN);
     SET_BIT(OE_PORT, OE_PIN);
     
-    setup_timer_2(T2_DIV_BY_16, 24, 1); //200 us overflow, 200 us interrupt
-    setup_ccp1(CCP_PWM);
+    //setup_timer_2(T2_DIV_BY_16, 24, 1); //200 us overflow, 200 us interrupt
+    //setup_ccp1(CCP_PWM);
 }
 /***************************************************************************************************************/
 void hc595_set_intensity(uint8_t value)
@@ -65,7 +65,7 @@ void hc595_set_intensity(uint8_t value)
 void hc595_write_special_char(uint8_t character, uint8_t pos)
 {
     hc595_buff[(DIGIT_COUNT - pos) - 1] = character;
-    hc595_write_data();
+    //hc595_write_data();
 }
 /***************************************************************************************************************/
 bool hc595_write_single_digit(uint8_t digit, uint8_t pos)
@@ -74,15 +74,14 @@ bool hc595_write_single_digit(uint8_t digit, uint8_t pos)
     if (pos < DIGIT_COUNT)
     {
         hc595_buff[(DIGIT_COUNT - pos) - 1] = font[digit];
-        hc595_write_data();
+        //hc595_write_data();
         result = TRUE;
     }
     return result;
 }
 /***************************************************************************************************************/
-void hc595_write_number(uint16_t number, uint8_t from, uint8_t size)
+void hc595_write_number(uint16_t number, uint8_t from, bool zeros, uint8_t size)
 {
-    //uint8_t digit_cnt = count_digit(number);
     uint8_t i;
     uint8_t temp;
     const uint8_t max = DIGIT_COUNT - 1;
@@ -96,12 +95,12 @@ void hc595_write_number(uint16_t number, uint8_t from, uint8_t size)
         }
         else
         {
-            hc595_buff[max - from - i] = font[0];
+            hc595_buff[max - from - i] = zeros ?  font[0] : SPECIAL_CHAR_BLANK;
         }
         
         
     }
-    hc595_write_data();
+    //hc595_write_data();
 }
 /***************************************************************************************************************/
 void hc595_point(bool state, uint8_t position)
@@ -114,11 +113,12 @@ void hc595_point(bool state, uint8_t position)
     {
         hc595_buff[DIGIT_COUNT - 1 - position] &= ~0x04;
     }
-    hc595_write_data();
+    //hc595_write_data();
 }
 /***************************************************************************************************************/
 void hc595_show_screen()
 {
+    hc595_write_data();
     pulse_out();
 }
 /***************************************************************************************************************/

@@ -25,6 +25,8 @@
       <itemPath>Src/hc595.c</itemPath>
       <itemPath>Src/dht22.c</itemPath>
       <itemPath>Src/ds3231.c</itemPath>
+      <itemPath>Src/led.c</itemPath>
+      <itemPath>Src/button.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"

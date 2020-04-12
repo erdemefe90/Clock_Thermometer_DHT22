@@ -21,4 +21,4 @@
 #define SET_BIT(p,n) ((p) |= (1 << (n)))
 #define CLR_BIT(p,n) ((p) &= ~((1) << (n)))
 #define CHECK_BIT(p,n) ((p) & ((1) << (n)))
-#define TOGGLE_BIT(p,n) ((p) ^= (1 << (n)))
+#define TOGGLE_BIT(p,n) ((p) ^= ((1) << (n)))

@@ -1,2 +1,2 @@
-//#define	REMOVE_CALENDAR
+#define	REMOVE_CALENDAR
 

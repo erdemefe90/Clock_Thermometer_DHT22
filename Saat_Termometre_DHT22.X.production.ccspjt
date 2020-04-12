@@ -22,9 +22,11 @@ D1_L=2
 D1_L1=[41]Project Opened.
 D1_L2=[106]Project Closed.
 [Units]
-Count=4
+Count=6
 1=Src\main
 2=Src\hc595
 3=Src\dht22
 4=Src\ds3231
+5=Src\led
+6=Src\button
 Link=1

@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' standalone='yes'?>
 <WORKSPACE>
  <FRAME activewindow="0">
-  <PLACEMENT>2c00000002000000030000000083ffff0083ffffffffffffffffffffab0000000d000000d506000003040000</PLACEMENT>
+  <PLACEMENT>2c0000000200000003000000ffffffffffffffffffffffffffffffffab0000000d000000d506000003040000</PLACEMENT>
   <WINDOW type="default" module="ISIS"/>
  </FRAME>
  <MODULE name="VSMDEBUG">
@@ -15,12 +15,20 @@
      <ITEM name="Version">100</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="350" x="58" flags="00000032" y="149" h="200" pid="1" iid="-1">
+   <POPUP w="476" x="-14" flags="00008033" y="482" h="363" pid="1" iid="-1">
     <PROPERTIES>
      <ITEM name="Address Column Width">83</ITEM>
      <ITEM name="AutoResize">No</ITEM>
      <ITEM name="Gridlines">Yes</ITEM>
-     <ITEM name="Name Column Width">83</ITEM>
+     <ITEM name="Item 0">"setting_order","0x003D",00000002,00000004,61,1,4,00000002,0,00000000,00000000</ITEM>
+     <ITEM name="Item 1">"hc595_intensity","0x003C",00000002,00000004,60,1,4,00000002,0,00000000,00000000</ITEM>
+     <ITEM name="Item 2">"clock_screent_time","0x002C",00000002,00000004,44,2,4,00000003,0,00000000,00000000</ITEM>
+     <ITEM name="Item 3">"temperature_screent_time","0x0034",00000002,00000004,52,2,4,00000003,0,00000000,00000000</ITEM>
+     <ITEM name="Item 4">"hummidity_screent_time","0x0038",00000002,00000004,56,2,4,00000003,0,00000000,00000000</ITEM>
+     <ITEM name="Item 5">"date_screen_time","0x0030",00000002,00000004,48,2,4,00000003,0,00000000,00000000</ITEM>
+     <ITEM name="Item 6">"special_char","0x005D",00000002,00000004,93,1,6,00000002,0,00000000,00000000</ITEM>
+     <ITEM name="Item 7">"special_char","0x005D",00000002,00000004,93,1,6,00000002,0,00000000,00000000</ITEM>
+     <ITEM name="Name Column Width">199</ITEM>
      <ITEM name="ShowAddresses">Yes</ITEM>
      <ITEM name="ShowPreviousValues">No</ITEM>
      <ITEM name="ShowTypes">No</ITEM>
@@ -29,7 +37,7 @@
      <ITEM name="Value Column Width">83</ITEM>
      <ITEM name="Version">100</ITEM>
      <ITEM name="Watch Expression Column Width">83</ITEM>
-     <ITEM name="nItems">0</ITEM>
+     <ITEM name="nItems">7</ITEM>
     </PROPERTIES>
    </POPUP>
    <POPUP w="695" x="78" flags="00000000" y="169" h="453" pid="0" iid="16">
@@ -53,6 +61,7 @@
      <ITEM name="DataType">2</ITEM>
      <ITEM name="DispChars">Yes</ITEM>
      <ITEM name="DispFormat">2</ITEM>
+     <ITEM name="LastGoto0">250</ITEM>
      <ITEM name="ShowChanges">Yes</ITEM>
      <ITEM name="ShowToolTips">Yes</ITEM>
      <ITEM name="TopLineAddress">00000000</ITEM>
@@ -81,7 +90,7 @@
      <ITEM name="TopLineAddress">00000000</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="156" x="218" flags="00000001" y="309" h="72" pid="1" iid="13">
+   <POPUP w="156" x="68" flags="00000001" y="370" h="72" pid="1" iid="13">
     <PROPERTIES/>
    </POPUP>
    <POPUP w="8" x="238" flags="00000008" y="329" h="32" pid="2" iid="13">
@@ -94,8 +103,16 @@
      <ITEM name="TopLineAddress">00000000</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="600" x="258" flags="0000002b" y="349" h="400" pid="1" iid="2">
+   <POPUP w="863" x="928" flags="0000002b" y="343" h="697" pid="1" iid="2">
     <PROPERTIES>
+     <ITEM name="Breakpoint 0">"",0423,0000,5335,24AF,1
+</ITEM>
+     <ITEM name="Breakpoint 1">"",05BB,0000,0ECC,24AF,1
+</ITEM>
+     <ITEM name="Breakpoint 2">"",0724,0000,6E58,24AF,1
+</ITEM>
+     <ITEM name="Breakpoint 3">"",08A2,0000,DC64,24AF,1
+</ITEM>
      <ITEM name="CaseSensitive">No</ITEM>
      <ITEM name="DISPADDRS">Yes</ITEM>
      <ITEM name="DISPLNUMS">No</ITEM>
@@ -105,19 +122,19 @@
      <ITEM name="nBreakpoints">0</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="300" x="278" flags="0000000b" y="369" h="300" pid="2" iid="2">
+   <POPUP w="671" x="25" flags="0000000b" y="383" h="554" pid="2" iid="2">
     <PROPERTIES>
-     <ITEM name="Address Column Width">94</ITEM>
+     <ITEM name="Address Column Width">58</ITEM>
      <ITEM name="AutoResize">No</ITEM>
      <ITEM name="Gridlines">Yes</ITEM>
-     <ITEM name="Name Column Width">94</ITEM>
+     <ITEM name="Name Column Width">234</ITEM>
      <ITEM name="ShowAddresses">Yes</ITEM>
      <ITEM name="ShowGlobals">Yes</ITEM>
      <ITEM name="ShowPreviousValues">No</ITEM>
      <ITEM name="ShowTypes">No</ITEM>
      <ITEM name="ShowWatchPoint">No</ITEM>
      <ITEM name="TriggerMode">0</ITEM>
-     <ITEM name="Value Column Width">94</ITEM>
+     <ITEM name="Value Column Width">362</ITEM>
      <ITEM name="Version">100</ITEM>
      <ITEM name="nItems">0</ITEM>
     </PROPERTIES>

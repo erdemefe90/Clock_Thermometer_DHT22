@@ -31,9 +31,11 @@ void button_timer()
     button_timeout[UP]++;
     button_timeout[DOWN]++;
     button_timeout[MODE]++;
+    //CLR_BIT(INTCON,7);
     if (FALSE == button_read(UP)) button_timeout[UP] = 0;
     if (FALSE == button_read(DOWN)) button_timeout[DOWN] = 0;
     if (FALSE == button_read(MODE)) button_timeout[MODE] = 0;
+    //SET_BIT(INTCON,7);
 }
 /***************************************************************************************************************/
 void button_init()

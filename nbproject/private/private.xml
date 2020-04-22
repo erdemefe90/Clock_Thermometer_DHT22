@@ -6,10 +6,12 @@
             <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Src/button.c</file>
             <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Src/led.c</file>
             <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Inc/led.h</file>
+            <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Inc/register_addresses.h</file>
             <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Src/hc595.c</file>
             <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Src/main.c</file>
             <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Inc/button.h</file>
             <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Inc/defines.h</file>
+            <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Inc/hc595.h</file>
         </group>
     </open-files>
 </project-private>

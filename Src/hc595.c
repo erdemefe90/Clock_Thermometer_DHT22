@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include "defines.h"
 #include "hc595.h"
-#include "ds3231.h"
 /***************************************************************************************************************/
 #use delay(crystal=8000000)
 /***************************************************************************************************************/
@@ -86,7 +85,7 @@ void hc595_write_number(uint16_t number, uint8_t from, bool zeros, uint8_t size)
     uint8_t temp;
     const uint8_t max = DIGIT_COUNT - 1;
     
-    
+    while ((from + size) > DIGIT_COUNT);
     for (i = 0 ; i < size ; i++)
     {
         if (number_to_digit(number , &temp , (size - 1 - i)))
@@ -183,3 +182,7 @@ static uint8_t count_digit(uint32_t n)
     return count; 
 } 
 /***************************************************************************************************************/
+uint8_t hc595_get_digit_count()
+{
+    return DIGIT_COUNT;
+}

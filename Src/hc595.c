@@ -35,6 +35,7 @@ static uint8_t hc595_buff[DIGIT_COUNT];
 /***************************************************************************************************************/
 static void pulse_out();
 static void hc595_write_data();
+static uint8_t map(uint8_t x, uint8_t in_min, uint8_t in_max, uint8_t out_min, uint8_t out_max);
 static bool number_to_digit(uint16_t number, uint8_t *digit, uint8_t digit_pos);
 static uint8_t count_digit(uint32_t n) ;
 /***************************************************************************************************************/
@@ -50,15 +51,17 @@ void hc595_init()
     CLR_BIT(LD_PORT, LD_PIN);
     SET_BIT(OE_PORT, OE_PIN);
     
-    //setup_timer_2(T2_DIV_BY_16, 24, 1); //200 us overflow, 200 us interrupt
-    //setup_ccp1(CCP_PWM);
+    setup_timer_2(T2_DIV_BY_16, 24, 1); //200 us overflow, 200 us interrupt
+    setup_ccp1(CCP_PWM);
 }
 /***************************************************************************************************************/
 void hc595_set_intensity(uint8_t value)
 {
-    CCPR1L = (value >> 2);
+    uint8_t pwm;
+    pwm = map(value,0,99,50,0);
+    CCPR1L = (pwm >> 2);
     CCP1CON &= ~0x30;
-    CCP1CON |= (value << 4) & 0x30;
+    CCP1CON |= (pwm << 4) & 0x30;
 }
 /***************************************************************************************************************/
 void hc595_write_special_char(uint8_t character, uint8_t pos)
@@ -119,6 +122,11 @@ void hc595_show_screen()
 {
     hc595_write_data();
     pulse_out();
+}
+/***************************************************************************************************************/
+static uint8_t map(uint8_t x, uint8_t in_min, uint8_t in_max, uint8_t out_min, uint8_t out_max) 
+{
+  return (x - in_min) * (out_max - out_min) / (in_max - in_min) + out_min;
 }
 /***************************************************************************************************************/
 static void hc595_write_data()

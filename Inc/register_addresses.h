@@ -8,6 +8,7 @@
 #byte _TMR1H   = 0x00F
 #byte _T1CON   = 0x010
 #byte _INTCON  = 0x00B
+#byte _OSCCON  = 0x08F
 
 #define PORTA   _PORTA
 #define PORTB   _PORTB  
@@ -19,6 +20,7 @@
 #define TMR1H   _TMR1H   
 #define T1CON   _T1CON   
 #define INTCON  _INTCON
+#define OSCCON _OSCCON
 
 #define SET_BIT(p,n) ((p) |= (1 << (n)))
 #define CLR_BIT(p,n) ((p) &= ~((1) << (n)))

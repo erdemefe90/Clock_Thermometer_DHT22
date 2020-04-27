@@ -81,9 +81,10 @@ bool button_read_with_timeout(button_types_t button, uint16_t time)
     return result;          
 }
 /***************************************************************************************************************/
-void button_increase_number(uint8_t *number, uint8_t max)
+bool button_increase_number(uint8_t *number, uint8_t max)
 {
-    uint8_t temp = *number;
+    bool result = FALSE;
+    int8_t temp = (int8_t)*number;
     if(TRUE == button_read(UP))
     {
         if (button_flag[UP])
@@ -105,13 +106,19 @@ void button_increase_number(uint8_t *number, uint8_t max)
             temp = (temp + UP_DOWN_COUNT);
         }
     }
-    if  (temp > max) temp = max;
+    if  (temp > max) 
+    {
+        temp = max;
+        result = TRUE;
+    }
     *number = temp;
+    return result;
 }
 /***************************************************************************************************************/
-void button_decrease_number(uint8_t *number, uint8_t min)
+bool button_decrease_number(uint8_t *number, uint8_t min)
 {
-    uint8_t temp = *number;
+    bool result = FALSE;
+    int8_t temp = (int8_t)*number;
     if(TRUE == button_read(DOWN))
     {
         if (button_flag[DOWN])
@@ -133,7 +140,12 @@ void button_decrease_number(uint8_t *number, uint8_t min)
             temp = (temp - UP_DOWN_COUNT);
         }
     }
-    if  (temp < min) temp = min;
+    if  (temp < min)
+    {
+        temp = min;
+        result  = TRUE;
+    }
     *number = temp;
+    return result;
 }
 /***************************************************************************************************************/

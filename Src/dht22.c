@@ -31,12 +31,12 @@ bool dht22_procsess()
     
     CLR_BIT(DHT22_TRIS, DHT22_PIN);
     CLR_BIT(DHT22_PORT, DHT22_PIN);         
-    delay_ms(20);
+    delay_ms(25);
     SET_BIT(DHT22_PORT, DHT22_PIN);
-    delay_us(50);
+    delay_us(25);
     SET_BIT(DHT22_TRIS, DHT22_PIN);
     
-    RESET_TIMER;
+    TMR1L = 0; TMR1H = 0;
     while (!CHECK_BIT(DHT22_PORT, DHT22_PIN) && (GET_TIMER < 100)); // wait until DHT22_PIN becomes high (checking of 80?s low time response)
 
     if (GET_TIMER > 99) // if response time > 99?S  ==> Response error
@@ -45,41 +45,42 @@ bool dht22_procsess()
     }
     else 
     {
-        RESET_TIMER;
+        TMR1L = 0; TMR1H = 0;
         while (CHECK_BIT(DHT22_PORT, DHT22_PIN) && (GET_TIMER < 100)); // wait until DHT22_PIN becomes low (checking of 80?s high time response)
-        if (GET_TIMER > 99) // if response time > 99?S  ==> Response error
+        if (GET_TIMER > 99)                                     // if response time > 99?S  ==> Response error
         {
-            return FALSE; // return 0 (Device has a problem with response)
+            return FALSE;                                       // return 0 (Device has a problem with response)
         }
         else
         {   
             for (j = 0; j < 5; j++)
             {
-                RESET_TIMER;
+                TMR1L = 0; TMR1H = 0;
                 for (i = 0; i < 8; i++) 
                 {
-                    RESET_TIMER;
-                    while (!CHECK_BIT(DHT22_PORT, DHT22_PIN)) // wait until DHT22_PIN becomes high
-                    if (GET_TIMER > 100) { // if low time > 100  ==>  Time out error (Normally it takes 50?s)
+                    TMR1L = 0; TMR1H = 0;
+                    while (!CHECK_BIT(DHT22_PORT, DHT22_PIN))   // wait until DHT22_PIN becomes high
+                    if (GET_TIMER > 100)                        // if low time > 100  ==>  Time out error (Normally it takes 50?s)
+                    { 
                         return FALSE;
                     }
 
-                    RESET_TIMER;
-                    while (CHECK_BIT(DHT22_PORT, DHT22_PIN)) // wait until DHT22_PIN becomes low
-                    if (GET_TIMER > 100) 
-                    { // if high time > 100  ==>  Time out error (Normally it takes 26-28?s for 0 and 70?s for 1)
-                        return FALSE; // return 1 (timeout error)
+                    TMR1L = 0; TMR1H = 0;
+                    while (CHECK_BIT(DHT22_PORT, DHT22_PIN))    // wait until DHT22_PIN becomes low
+                    if (GET_TIMER > 100)                        // if high time > 100  ==>  Time out error (Normally it takes 26-28?s for 0 and 70?s for 1)
+                    { 
+                        return FALSE;                           // return 1 (timeout error)
                     }
 
-                    if (GET_TIMER > 50) // if high time > 50  ==>  Sensor sent 1
+                    if (GET_TIMER > 50)                         // if high time > 50  ==>  Sensor sent 1
                     {
-                        data[j] |= (1 << (7 - i)); // set bit (7 - i)
+                        data[j] |= (1 << (7 - i));              // set bit (7 - i)
                     }
                 }
             }
+            
             if(((data[0] + data[1] + data[2] + data[3]) & 0xFF) == data[4])
             {
-                
                 for(i = 0 ; i < 4; i++) 
                 {
                     correct_data[i] = data[i];

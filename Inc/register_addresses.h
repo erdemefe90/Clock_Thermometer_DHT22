@@ -7,16 +7,20 @@
 #byte _TMR1L   = 0x00E
 #byte _TMR1H   = 0x00F
 #byte _T1CON   = 0x010
+#byte _INTCON  = 0x00B
+#byte _OSCCON  = 0x08F
 
-#define PORTA _PORTA
-#define PORTB _PORTB  
-#define TRISA _TRISA  
-#define TRISB _TRISB  
-#define CCPR1L _CCPR1L  
+#define PORTA   _PORTA
+#define PORTB   _PORTB  
+#define TRISA   _TRISA  
+#define TRISB   _TRISB  
+#define CCPR1L  _CCPR1L  
 #define CCP1CON _CCP1CON 
-#define TMR1L _TMR1L   
-#define TMR1H _TMR1H   
-#define T1CON _T1CON   
+#define TMR1L   _TMR1L   
+#define TMR1H   _TMR1H   
+#define T1CON   _T1CON   
+#define INTCON  _INTCON
+#define OSCCON _OSCCON
 
 #define SET_BIT(p,n) ((p) |= (1 << (n)))
 #define CLR_BIT(p,n) ((p) &= ~((1) << (n)))

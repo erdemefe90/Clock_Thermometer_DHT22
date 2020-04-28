@@ -7,7 +7,7 @@
 
 /***************************************************************************************************************/
 #use delay(crystal=8000000)
-#use i2c(Master,Fast,sda=PIN_B1,scl=PIN_B4,force_hw)
+#use i2c(Master,Fast,sda=PIN_B1,scl=PIN_B4,force_sw)
  /***************************************************************************************************************/
 #define DS3231_I2C_ADDR_WRITE 0xD0
 #define DS3231_I2C_ADDR_READ 0xD1
@@ -31,6 +31,8 @@ static uint8_t decimal_to_bcd(uint8_t d);
 /***************************************************************************************************************/
 void ds3231_init()
 {
+    SET_BIT(TRISB, 1);
+    SET_BIT(TRISB, 2);
     ds3231_write_register(DS3231_REG_CONTROL, 0x00);
     ds3231_write_register(DS3231_REG_STATUS, 0x08);
 }
@@ -67,19 +69,19 @@ void ds3231_write_time(time_t *time_to_write)
     uint8_t buff[2];
     const uint8_t start_register = DS3231_REG_MINUTE;
     ptr = &buff;
-    *ptr++ = decimal_to_bcd(time_to_write->minute);
-    *ptr++ = decimal_to_bcd(time_to_write->hour);
+    *ptr++ = decimal_to_bcd(time_to_write->minute) & 0x7F;
+    *ptr++ = decimal_to_bcd(time_to_write->hour) & 0x3F;
 #else
     uint8_t buff[7];
     const uint8_t start_register = DS3231_REG_SECOND;
     ptr = &buff;
-    *ptr++ = decimal_to_bcd(time_to_write->second);
-    *ptr++ = decimal_to_bcd(time_to_write->minute);
-    *ptr++ = decimal_to_bcd(time_to_write->hour);
-    *ptr++ = decimal_to_bcd(time_to_write->day);
-    *ptr++ = decimal_to_bcd(time_to_write->date);
-    *ptr++ = decimal_to_bcd(time_to_write->month);
-    *ptr++ = decimal_to_bcd(time_to_write->year);
+    *ptr++ = decimal_to_bcd(time_to_write->second) & 0x7F;
+    *ptr++ = decimal_to_bcd(time_to_write->minute) & 0x7F;
+    *ptr++ = decimal_to_bcd(time_to_write->hour) & 0x3F;
+    *ptr++ = decimal_to_bcd(time_to_write->day) & 0x03;
+    *ptr++ = decimal_to_bcd(time_to_write->date) & 0x3F;
+    *ptr++ = decimal_to_bcd(time_to_write->month) & 0x1F;
+    *ptr++ = decimal_to_bcd(time_to_write->year) & 0xFF;
 #endif
     ds3231_write_bytes(start_register, &buff, sizeof(buff));
 }

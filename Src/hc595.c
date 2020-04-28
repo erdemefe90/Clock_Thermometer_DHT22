@@ -4,7 +4,6 @@
 #include <stdbool.h>
 #include "defines.h"
 #include "hc595.h"
-#include "ds3231.h"
 /***************************************************************************************************************/
 #use delay(crystal=8000000)
 /***************************************************************************************************************/
@@ -51,15 +50,17 @@ void hc595_init()
     CLR_BIT(LD_PORT, LD_PIN);
     SET_BIT(OE_PORT, OE_PIN);
     
-    //setup_timer_2(T2_DIV_BY_16, 24, 1); //200 us overflow, 200 us interrupt
-    //setup_ccp1(CCP_PWM);
+    setup_timer_2(T2_DIV_BY_16, 24, 1); //200 us overflow, 200 us interrupt
+    setup_ccp1(CCP_PWM);
 }
 /***************************************************************************************************************/
 void hc595_set_intensity(uint8_t value)
 {
-    CCPR1L = (value >> 2);
+    uint8_t pwm;
+    pwm = 100-(value*10);
+    CCPR1L = (pwm >> 2);
     CCP1CON &= ~0x30;
-    CCP1CON |= (value << 4) & 0x30;
+    CCP1CON |= (pwm << 4) & 0x30;
 }
 /***************************************************************************************************************/
 void hc595_write_special_char(uint8_t character, uint8_t pos)
@@ -86,7 +87,7 @@ void hc595_write_number(uint16_t number, uint8_t from, bool zeros, uint8_t size)
     uint8_t temp;
     const uint8_t max = DIGIT_COUNT - 1;
     
-    
+    while ((from + size) > DIGIT_COUNT);
     for (i = 0 ; i < size ; i++)
     {
         if (number_to_digit(number , &temp , (size - 1 - i)))
@@ -183,3 +184,7 @@ static uint8_t count_digit(uint32_t n)
     return count; 
 } 
 /***************************************************************************************************************/
+uint8_t hc595_get_digit_count()
+{
+    return DIGIT_COUNT;
+}

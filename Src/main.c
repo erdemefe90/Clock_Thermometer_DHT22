@@ -13,7 +13,6 @@
 
 
 #use delay(crystal=8000000)
-#use i2c(Master,Fast,sda=PIN_B1,scl=PIN_B4,force_hw)
 /***************************************************************************************************************/
 #include <stdint.h>
 #include <stdbool.h>
@@ -76,7 +75,7 @@ void screen_date()
 void screen_temperature()
 {
     int16_t temperature = dht22_read_temperature();
-    temperature = -96;
+    //temperature = -96;
 #ifndef REMOVE_CALENDAR
     hc595_write_special_char((temperature < 0) ? SPECIAL_CHAR_MINUS : SPECIAL_CHAR_BLANK, 0);
     hc595_write_number(abs(temperature), 1, FALSE, 3);
@@ -95,7 +94,7 @@ void screen_temperature()
 void screen_hummidity()
 {
     uint16_t hummidity = dht22_read_hummidity();
-    hummidity = 36;
+    //hummidity = 36;
     hc595_write_special_char(SPECIAL_CHAR_r , 0);
     hc595_write_special_char(SPECIAL_CHAR_H , 1);
 #ifndef REMOVE_CALENDAR
@@ -156,7 +155,7 @@ void initializing_setting()
             break;
     }
         
-        button_increase_number((uint8_t*)&number[setting_order], (setting_order != 0 ? 60 : 99));
+        button_increase_number((uint8_t*)&number[setting_order], (setting_order != 0 ? 60 : 10));
         button_decrease_number((uint8_t*)&number[setting_order], 0);
         
         hc595_intensity = number[0];
@@ -196,6 +195,7 @@ void initializing_setting()
     
 }
 /***************************************************************************************************************/
+#ifndef REMOVE_CALENDAR
 void clock_date_setting()
 {
     time_t current_time;
@@ -347,6 +347,7 @@ void clock_date_setting()
         hc595_show_screen();
     }
 }
+#else
 /***************************************************************************************************************/
 void clock_setting()
 {
@@ -421,10 +422,11 @@ void clock_setting()
         hc595_show_screen();
     }
 }
+#endif
 /***************************************************************************************************************/
 void main() {
-    //setup_oscillator(OSC_8MHZ);
-    OSCCON = 0x70;
+    setup_oscillator(OSC_8MHZ);
+    //OSCCON = 0x70;
     setup_adc(ADC_OFF);
     setup_timer_0(RTCC_INTERNAL | RTCC_DIV_8 | T0_8_BIT);
     set_timer0(5);    
@@ -456,6 +458,7 @@ void main() {
     hc595_set_intensity(hc595_intensity);
     if (button_read(MODE) == TRUE) initializing_setting();
     screen_mode = 0;
+    screen_timeout = 0;
     led(500,500,0,TRUE);
     
     while(TRUE)
@@ -463,7 +466,7 @@ void main() {
         if (dht22_read_timeout > 2000)
         {
             dht22_read_timeout = 0;
- //           dht22_procsess();
+            dht22_procsess();
         }
         
         if (button_read_with_timeout(MODE,500) == TRUE)

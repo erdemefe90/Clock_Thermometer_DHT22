@@ -7,7 +7,7 @@
 
 /***************************************************************************************************************/
 #use delay(crystal=8000000)
-#use i2c(Master,Fast,sda=PIN_B1,scl=PIN_B4,force_hw)
+#use i2c(Master,Fast,sda=PIN_B1,scl=PIN_B4,force_sw)
  /***************************************************************************************************************/
 #define DS3231_I2C_ADDR_WRITE 0xD0
 #define DS3231_I2C_ADDR_READ 0xD1
@@ -31,6 +31,8 @@ static uint8_t decimal_to_bcd(uint8_t d);
 /***************************************************************************************************************/
 void ds3231_init()
 {
+    SET_BIT(TRISB, 1);
+    SET_BIT(TRISB, 2);
     ds3231_write_register(DS3231_REG_CONTROL, 0x00);
     ds3231_write_register(DS3231_REG_STATUS, 0x08);
 }

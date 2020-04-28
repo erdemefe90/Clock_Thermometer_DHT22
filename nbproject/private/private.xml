@@ -5,6 +5,7 @@
         <group>
             <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Src/button.c</file>
             <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Src/led.c</file>
+            <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Src/dht22.c</file>
             <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Inc/led.h</file>
             <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Inc/register_addresses.h</file>
             <file>file:/D:/Repositories/Saat_Termometre_DHT22.X/Src/hc595.c</file>

@@ -6,7 +6,7 @@
  </FRAME>
  <MODULE name="VSMDEBUG">
   <PWI>
-   <POPUP w="636" x="664" flags="00000003" y="660" h="257" pid="0" iid="-1">
+   <POPUP w="636" x="254" flags="00000002" y="745" h="257" pid="0" iid="-1">
     <PROPERTIES>
      <ITEM name="Message Column Width">378</ITEM>
      <ITEM name="ShowGrid">No</ITEM>
@@ -24,6 +24,7 @@
      <ITEM name="Item 1">"SSPCON2","0x0091",00000002,00000004,145,1,0,64F40000,0,00000000,00000000</ITEM>
      <ITEM name="Item 2">"TRISB","0x0086",00000002,00000004,134,1,0,00000002,0,00000000,00000000</ITEM>
      <ITEM name="Item 3">"hc595_intensity","0x002F",00000002,00000004,47,1,4,00000002,0,00000000,00000000</ITEM>
+     <ITEM name="Item 4">"TMR1 (WORD)","0x000E",00000002,00000004,14,2,4,00000003,0,00000000,00000000</ITEM>
      <ITEM name="Name Column Width">141</ITEM>
      <ITEM name="ShowAddresses">Yes</ITEM>
      <ITEM name="ShowPreviousValues">No</ITEM>
@@ -33,10 +34,10 @@
      <ITEM name="Value Column Width">87</ITEM>
      <ITEM name="Version">100</ITEM>
      <ITEM name="Watch Expression Column Width">87</ITEM>
-     <ITEM name="nItems">4</ITEM>
+     <ITEM name="nItems">5</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="695" x="1095" flags="00008001" y="518" h="453" pid="0" iid="16">
+   <POPUP w="695" x="1095" flags="00000000" y="518" h="453" pid="0" iid="16">
     <PROPERTIES/>
    </POPUP>
    <POPUP w="52" x="5" flags="00000008" y="106" h="10" pid="3" iid="2">
@@ -98,17 +99,17 @@
      <ITEM name="TopLineAddress">00000000</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="832" x="495" flags="0000002b" y="269" h="733" pid="1" iid="2">
+   <POPUP w="1154" x="635" flags="0000802b" y="210" h="733" pid="1" iid="2">
     <PROPERTIES>
-     <ITEM name="Breakpoint 0">"",01B5,0000,2454,99F5,1
+     <ITEM name="Breakpoint 0">"",06AA,0000,2C41,08B7,-1
 </ITEM>
-     <ITEM name="Breakpoint 1">"",01CA,0000,2454,99F5,1
+     <ITEM name="Breakpoint 1">"",06BE,0000,27A2,08B7,1
 </ITEM>
-     <ITEM name="Breakpoint 2">"",06D0,0000,2C41,08B7,-1
+     <ITEM name="Breakpoint 2">"",06CA,0000,4A5D,08B7,1
 </ITEM>
-     <ITEM name="Breakpoint 3">"",070F,0000,2D60,08B7,1
+     <ITEM name="Breakpoint 3">"",0712,0000,FE44,08B7,1
 </ITEM>
-     <ITEM name="Breakpoint 4">"",0723,0000,9C21,08B7,1
+     <ITEM name="Breakpoint 4">"",0716,0000,9422,08B7,1
 </ITEM>
      <ITEM name="Breakpoint 5">"",0723,0000,9C21,08B7,1
 </ITEM>
@@ -118,10 +119,10 @@
      <ITEM name="DISPOPCODES">No</ITEM>
      <ITEM name="FIXUPBPTS">Yes</ITEM>
      <ITEM name="WordsOnly">No</ITEM>
-     <ITEM name="nBreakpoints">0</ITEM>
+     <ITEM name="nBreakpoints">5</ITEM>
     </PROPERTIES>
    </POPUP>
-   <POPUP w="570" x="112" flags="0000000b" y="257" h="621" pid="2" iid="2">
+   <POPUP w="571" x="84" flags="0000000b" y="309" h="621" pid="2" iid="2">
     <PROPERTIES>
      <ITEM name="Address Column Width">99</ITEM>
      <ITEM name="AutoResize">No</ITEM>

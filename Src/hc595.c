@@ -66,7 +66,6 @@ void hc595_set_intensity(uint8_t value)
 void hc595_write_special_char(uint8_t character, uint8_t pos)
 {
     hc595_buff[(DIGIT_COUNT - pos) - 1] = character;
-    //hc595_write_data();
 }
 /***************************************************************************************************************/
 bool hc595_write_single_digit(uint8_t digit, uint8_t pos)
@@ -101,7 +100,6 @@ void hc595_write_number(uint16_t number, uint8_t from, bool zeros, uint8_t size)
         
         
     }
-    //hc595_write_data();
 }
 /***************************************************************************************************************/
 void hc595_point(bool state, uint8_t position)
@@ -114,7 +112,6 @@ void hc595_point(bool state, uint8_t position)
     {
         hc595_buff[DIGIT_COUNT - 1 - position] &= ~0x04;
     }
-    //hc595_write_data();
 }
 /***************************************************************************************************************/
 void hc595_show_screen()
@@ -137,7 +134,6 @@ static void hc595_write_data()
             CLR_BIT(CLK_PORT, CLK_PIN);
         }
     }
-    //pulse_out();
 }
 /***************************************************************************************************************/
 static void pulse_out()

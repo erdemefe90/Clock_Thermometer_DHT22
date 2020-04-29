@@ -5,7 +5,7 @@
 #include "button.h"
 
 #define UP_DOWN_SENSE_TIME_MS   1000
-#define UP_DOWN_SPEED_MS        50
+#define UP_DOWN_SPEED_MS        100
 
 #define UP_DOWN_COUNT           1
 
@@ -28,14 +28,31 @@ uint16_t up_down_timeout;
 void button_timer()
 {
     up_down_timeout++;
-    button_timeout[UP]++;
-    button_timeout[DOWN]++;
-    button_timeout[MODE]++;
-    //CLR_BIT(INTCON,7);
-    if (FALSE == button_read(UP)) button_timeout[UP] = 0;
-    if (FALSE == button_read(DOWN)) button_timeout[DOWN] = 0;
-    if (FALSE == button_read(MODE)) button_timeout[MODE] = 0;
-    //SET_BIT(INTCON,7);
+    
+    if (TRUE == button_read(UP)) 
+    {
+        button_timeout[UP]++;
+    }
+    else
+    {
+        button_timeout[UP] = 0;
+    }
+    if (TRUE == button_read(DOWN)) 
+    {
+        button_timeout[DOWN]++;
+    }
+    else
+    {
+        button_timeout[DOWN] = 0;
+    }
+    if (TRUE == button_read(MODE)) 
+    {
+        button_timeout[MODE]++;
+    }
+    else
+    {
+        button_timeout[MODE] = 0;
+    }
 }
 /***************************************************************************************************************/
 void button_init()

@@ -3,14 +3,7 @@
 /***************************************************************************************************************/
 #device ADC=16
 
-#FUSES INTRC_IO
-#FUSES NOMCLR
-#FUSES NOWDT                    //No Watch Dog Timer
-#FUSES NOBROWNOUT               //No brownout reset
-#FUSES NOLVP                    //No low voltage prgming, B3(PIC16) or B5(PIC18) used for I/O
-#FUSES CCPB0
-#FUSES NOWDT
-
+#FUSES INTRC_IO, NOMCLR, NOWDT, NOBROWNOUT, NOLVP, CCPB0, NOWDT
 
 #use delay(crystal=8000000)
 /***************************************************************************************************************/
@@ -170,7 +163,7 @@ void initializing_setting()
         {
             while (button_read(MODE) == TRUE)
             {
-                if (button_read_with_timeout(MODE, 500))
+                if (button_read_with_timeout(MODE, BUTTON_HOLD_TIME_MS))
                 {
                     led (250, 100, 3, TRUE);
                     for (i = 0 ; i < digit_count ; i++)
@@ -217,7 +210,7 @@ void clock_date_setting()
         {
             while(button_read(MODE))
             {
-                if (button_read_with_timeout(MODE , 500))
+                if (button_read_with_timeout(MODE , BUTTON_HOLD_TIME_MS))
                 {
                     ds3231_write_time(&to_set_time);
                     led(100,100,5,TRUE);
@@ -369,7 +362,7 @@ void clock_setting()
         {
             while(button_read(MODE))
             {
-                if (button_read_with_timeout(MODE , 500))
+                if (button_read_with_timeout(MODE , BUTTON_HOLD_TIME_MS))
                 {
                     ds3231_write_time(&to_set_time);
                     led(100,100,5,TRUE);
@@ -463,13 +456,13 @@ void main() {
     
     while(TRUE)
     {
-        if (dht22_read_timeout > 2000)
+        if (dht22_read_timeout > 3000)
         {
             dht22_read_timeout = 0;
             dht22_procsess();
         }
         
-        if (button_read_with_timeout(MODE,500) == TRUE)
+        if (button_read_with_timeout(MODE,BUTTON_HOLD_TIME_MS) == TRUE)
         {
 #ifdef REMOVE_CALENDAR
             clock_setting();

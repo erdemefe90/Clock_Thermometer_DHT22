@@ -191,6 +191,7 @@ void initializing_setting()
 #ifndef REMOVE_CALENDAR
 void clock_date_setting()
 {
+    uint8_t i;
     time_t current_time;
     time_t to_set_time;
     bool flash;
@@ -200,7 +201,11 @@ void clock_date_setting()
     memcpy(&to_set_time , &current_time , sizeof(time_t));
     
     led(500,500,0,FALSE);
-    
+    for (i = 0; i < hc595_get_digit_count() ; i++)
+    {
+        hc595_write_special_char(SPECIAL_CHAR_MINUS, i);
+    }
+    hc595_show_screen();
     while (button_read(MODE) == TRUE);
     
     while (TRUE)
@@ -273,9 +278,9 @@ void clock_date_setting()
             case 3:
                 if (TRUE == button_increase_number(&to_set_time.date,31))
                 {
-                    to_set_time.date = 0;
+                    to_set_time.date = 1;
                 }
-                if (TRUE == button_decrease_number(&to_set_time.date,0))
+                if (TRUE == button_decrease_number(&to_set_time.date,1))
                 {
                     to_set_time.date = 31;
                 }
@@ -284,9 +289,9 @@ void clock_date_setting()
             case 4:
                 if (TRUE == button_increase_number(&to_set_time.month,12))
                 {
-                    to_set_time.month = 0;
+                    to_set_time.month = 1;
                 }
-                if (TRUE == button_decrease_number(&to_set_time.month,0))
+                if (TRUE == button_decrease_number(&to_set_time.month,1))
                 {
                     to_set_time.month = 12;
                 }
@@ -295,9 +300,9 @@ void clock_date_setting()
             case 5:
                 if (TRUE == button_increase_number(&to_set_time.year,99))
                 {
-                    to_set_time.year = 0;
+                    to_set_time.year = 1;
                 }
-                if (TRUE == button_decrease_number(&to_set_time.year,0))
+                if (TRUE == button_decrease_number(&to_set_time.year,1))
                 {
                     to_set_time.year = 99;
                 }
@@ -344,6 +349,7 @@ void clock_date_setting()
 /***************************************************************************************************************/
 void clock_setting()
 {
+    uint8_t i;
     time_t current_time;
     time_t to_set_time;
     bool flash;
@@ -353,6 +359,11 @@ void clock_setting()
     
     led(500,500,0,FALSE);
     
+    for (i = 0; i < hc595_get_digit_count() ; i++)
+    {
+        hc595_write_special_char(SPECIAL_CHAR_MINUS, i);
+    }
+    hc595_show_screen();
     while (button_read(MODE) == TRUE);
     
     while (TRUE)

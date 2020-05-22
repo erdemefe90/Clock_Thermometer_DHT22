@@ -112,7 +112,7 @@ void initializing_setting()
     uint16_t number[AYAR_COUNT];
     uint8_t digit_count = hc595_get_digit_count();
     uint8_t i;
-    
+    led(500,500,0,FALSE);
     number[0] = hc595_intensity;
     number[1] = clock_screen_time / 1000;
     number[2] = temperature_screen_time / 1000;
@@ -161,6 +161,10 @@ void initializing_setting()
 
         if (button_read(MODE) == TRUE)
         {
+            if (setting_order == 0) hc595_set_intensity(number[0]);
+            write_eeprom(setting_order, number[setting_order]);
+            setting_order++;
+            if (setting_order == AYAR_COUNT) setting_order = 0;
             while (button_read(MODE) == TRUE)
             {
                 if (button_read_with_timeout(MODE, BUTTON_HOLD_TIME_MS))
@@ -175,10 +179,6 @@ void initializing_setting()
                     return;
                 }
             }     
-            if (setting_order == 0) hc595_set_intensity(number[0]);
-            write_eeprom(setting_order, number[setting_order]);
-            setting_order++;
-            if (setting_order == AYAR_COUNT) setting_order = 0;
         }
  
         hc595_write_special_char(special_char, 0);

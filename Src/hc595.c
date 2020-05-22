@@ -58,6 +58,7 @@ void hc595_set_intensity(uint8_t value)
 {
     uint8_t pwm;
     pwm = 100-(value*10);
+    if(pwm == 100) pwm = 99;
     CCPR1L = (pwm >> 2);
     CCP1CON &= ~0x30;
     CCP1CON |= (pwm << 4) & 0x30;

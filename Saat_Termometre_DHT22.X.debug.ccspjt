@@ -1,0 +1,20 @@
+[PROJECT]
+Target=dist\default\debug\Saat_Termometre_DHT22.X.debug.hex
+Processor_Text=PIC16F88
+CCSVersion=5.093
+Compiler=PCM
+[Target Data]
+FileList=$linker.c
+[dist\default\debug\Saat_Termometre_DHT22.X.debug.c]
+Type=4
+[mru-list]
+1=dist\default\debug\Saat_Termometre_DHT22.X.debug.c
+[Units]
+Count=6
+1=Src\main
+2=Src\hc595
+3=Src\dht22
+4=Src\ds3231
+5=Src\led
+6=Src\button
+Link=1

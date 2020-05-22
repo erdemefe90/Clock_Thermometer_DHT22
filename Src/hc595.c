@@ -4,11 +4,10 @@
 #include <stdbool.h>
 #include "defines.h"
 #include "hc595.h"
-#include "ds3231.h"
 /***************************************************************************************************************/
 #use delay(crystal=8000000)
 /***************************************************************************************************************/
-#ifdef REMOVE_CALENDER
+#ifdef REMOVE_CALENDAR
     #define DIGIT_COUNT 4
 #else
     #define DIGIT_COUNT 6
@@ -30,7 +29,8 @@
 #define OE_PIN      0
 #define OE_TRIS     TRISB
 /***************************************************************************************************************/
-const uint8_t font[13] = {0xFA, 0x30, 0xD9, 0x79, 0x33, 0x6B, 0xEB, 0x38, 0xFB, 0x7B, 0x1B, 0x81, 0xB7};
+/*                          E	D	C	B	A   DP  F	G   */
+const uint8_t font[13] = {0xFA, 0x30, 0xD9, 0x79, 0x33, 0x6B, 0xEB, 0x38, 0xFB, 0x7B};
 static uint8_t hc595_buff[DIGIT_COUNT];
 /***************************************************************************************************************/
 static void pulse_out();
@@ -56,9 +56,17 @@ void hc595_init()
 /***************************************************************************************************************/
 void hc595_set_intensity(uint8_t value)
 {
-    CCPR1L = (value >> 2);
+    uint8_t pwm;
+    pwm = 100-(value*10);
+    if(pwm == 100) pwm = 99;
+    CCPR1L = (pwm >> 2);
     CCP1CON &= ~0x30;
-    CCP1CON |= (value << 4) & 0x30;
+    CCP1CON |= (pwm << 4) & 0x30;
+}
+/***************************************************************************************************************/
+void hc595_write_special_char(uint8_t character, uint8_t pos)
+{
+    hc595_buff[(DIGIT_COUNT - pos) - 1] = character;
 }
 /***************************************************************************************************************/
 bool hc595_write_single_digit(uint8_t digit, uint8_t pos)
@@ -67,20 +75,19 @@ bool hc595_write_single_digit(uint8_t digit, uint8_t pos)
     if (pos < DIGIT_COUNT)
     {
         hc595_buff[(DIGIT_COUNT - pos) - 1] = font[digit];
-        hc595_write_data();
+        //hc595_write_data();
         result = TRUE;
     }
     return result;
 }
 /***************************************************************************************************************/
-void hc595_write_number(uint16_t number, uint8_t from, uint8_t size)
+void hc595_write_number(uint16_t number, uint8_t from, bool zeros, uint8_t size)
 {
-    //uint8_t digit_cnt = count_digit(number);
     uint8_t i;
     uint8_t temp;
     const uint8_t max = DIGIT_COUNT - 1;
     
-    
+    while ((from + size) > DIGIT_COUNT);
     for (i = 0 ; i < size ; i++)
     {
         if (number_to_digit(number , &temp , (size - 1 - i)))
@@ -89,12 +96,11 @@ void hc595_write_number(uint16_t number, uint8_t from, uint8_t size)
         }
         else
         {
-            hc595_buff[max - from - i] = font[0];
+            hc595_buff[max - from - i] = zeros ?  font[0] : SPECIAL_CHAR_BLANK;
         }
         
         
     }
-    hc595_write_data();
 }
 /***************************************************************************************************************/
 void hc595_point(bool state, uint8_t position)
@@ -107,7 +113,12 @@ void hc595_point(bool state, uint8_t position)
     {
         hc595_buff[DIGIT_COUNT - 1 - position] &= ~0x04;
     }
+}
+/***************************************************************************************************************/
+void hc595_show_screen()
+{
     hc595_write_data();
+    pulse_out();
 }
 /***************************************************************************************************************/
 static void hc595_write_data()
@@ -124,7 +135,6 @@ static void hc595_write_data()
             CLR_BIT(CLK_PORT, CLK_PIN);
         }
     }
-    pulse_out();
 }
 /***************************************************************************************************************/
 static void pulse_out()
@@ -171,3 +181,7 @@ static uint8_t count_digit(uint32_t n)
     return count; 
 } 
 /***************************************************************************************************************/
+uint8_t hc595_get_digit_count()
+{
+    return DIGIT_COUNT;
+}

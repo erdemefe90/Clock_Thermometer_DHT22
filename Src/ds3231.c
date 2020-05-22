@@ -7,10 +7,10 @@
 
 /***************************************************************************************************************/
 #use delay(crystal=8000000)
-#use i2c(Master,Fast,sda=PIN_B1,scl=PIN_B4,force_hw)
+#use i2c(Master,Fast,sda=PIN_B1,scl=PIN_B4,force_sw)
  /***************************************************************************************************************/
 #define DS3231_I2C_ADDR_WRITE 0xD0
-#define DS3231_I2C_ADDR_READ 0xD1
+#define DS3231_I2C_ADDR_READ  0xD1
 
 #define DS3231_REG_SECOND   0x00
 #define DS3231_REG_MINUTE   0x01
@@ -22,69 +22,71 @@
 #define DS3231_REG_CONTROL  0x0E
 #define DS3231_REG_STATUS   0x0F
 /***************************************************************************************************************/
-static uint8_t ds3231_read_register(uint8_t register_address);
-static void ds3231_write_register(uint8_t register_address, uint8_t data);
-static void ds3231_write_bytes(uint8_t register_address, uint8_t *buffer , uint8_t length);
-static void ds3231_read_bytes(uint8_t register_address, uint8_t *buffer, uint8_t length);
+static uint8_t read_register(uint8_t register_address);
+static void write_register(uint8_t register_address, uint8_t data);
+static void write_bytes(uint8_t register_address, uint8_t *buffer , uint8_t length);
+static void read_bytes(uint8_t register_address, uint8_t *buffer, uint8_t length);
 static uint8_t bcd_to_decimal(uint8_t d);
 static uint8_t decimal_to_bcd(uint8_t d);
 /***************************************************************************************************************/
 void ds3231_init()
 {
-    ds3231_write_register(DS3231_REG_CONTROL, 0x00);
-    ds3231_write_register(DS3231_REG_STATUS, 0x08);
+    SET_BIT(TRISB, 1);
+    SET_BIT(TRISB, 2);
+    write_register(DS3231_REG_CONTROL, 0x00);
+    write_register(DS3231_REG_STATUS, 0x08);
 }
 /***************************************************************************************************************/
 void ds3231_read_time(time_t *time) 
 {
     uint8_t *ptr;
-#ifdef REMOVE_CALENDER
+#ifdef REMOVE_CALENDAR
     uint8_t buff[2];
     const uint8_t start_register = DS3231_REG_MINUTE;
-    ds3231_read_bytes(start_register, &buff, sizeof(buff));
+    read_bytes(start_register, &buff, sizeof(buff));
     ptr = &buff;
     time->minute = bcd_to_decimal(*ptr++ & 0x7F);
-    time->hour = bcd_to_decimal(*ptr++ & 0x1F);
+    time->hour = bcd_to_decimal(*ptr++ & 0x3F);
 #else
     uint8_t buff[7];
     const uint8_t start_register = DS3231_REG_SECOND;
-    ds3231_read_bytes(start_register, &buff, sizeof(buff));
+    read_bytes(start_register, &buff, sizeof(buff));
     ptr = &buff;
     time->second = bcd_to_decimal(*ptr++ & 0x7F);
     time->minute = bcd_to_decimal(*ptr++ & 0x7F);
-    time->hour = bcd_to_decimal(*ptr++ & 0x1F);
+    time->hour = bcd_to_decimal(*ptr++ & 0x3F);
     time->day = bcd_to_decimal(*ptr++ & 0x03);
     time->date = bcd_to_decimal(*ptr++ & 0x3F);
     time->month = bcd_to_decimal(*ptr++ & 0x1F);
-    time->year = bcd_to_decimal(*ptr++ & 0xFF);
+    time->year = bcd_to_decimal(*ptr & 0xFF);
 #endif 
 }
 
 void ds3231_write_time(time_t *time_to_write)
 {
     uint8_t *ptr;
-#ifdef REMOVE_CALENDER
+#ifdef REMOVE_CALENDAR
     uint8_t buff[2];
     const uint8_t start_register = DS3231_REG_MINUTE;
     ptr = &buff;
-    *ptr++ = decimal_to_bcd(time_to_write->minute);
-    *ptr++ = decimal_to_bcd(time_to_write->hour);
+    *ptr++ = decimal_to_bcd(time_to_write->minute) & 0x7F;
+    *ptr++ = decimal_to_bcd(time_to_write->hour) & 0x3F;
 #else
     uint8_t buff[7];
     const uint8_t start_register = DS3231_REG_SECOND;
     ptr = &buff;
-    *ptr++ = decimal_to_bcd(time_to_write->second);
-    *ptr++ = decimal_to_bcd(time_to_write->minute);
-    *ptr++ = decimal_to_bcd(time_to_write->hour);
-    *ptr++ = decimal_to_bcd(time_to_write->day);
-    *ptr++ = decimal_to_bcd(time_to_write->date);
-    *ptr++ = decimal_to_bcd(time_to_write->month);
-    *ptr++ = decimal_to_bcd(time_to_write->year);
+    *ptr++ = decimal_to_bcd(time_to_write->second) & 0x7F;
+    *ptr++ = decimal_to_bcd(time_to_write->minute) & 0x7F;
+    *ptr++ = decimal_to_bcd(time_to_write->hour) & 0x3F;
+    *ptr++ = decimal_to_bcd(time_to_write->day) & 0x03;
+    *ptr++ = decimal_to_bcd(time_to_write->date) & 0x3F;
+    *ptr++ = decimal_to_bcd(time_to_write->month) & 0x1F;
+    *ptr++ = decimal_to_bcd(time_to_write->year) & 0xFF;
 #endif
-    ds3231_write_bytes(start_register, &buff, sizeof(buff));
+    write_bytes(start_register, &buff, sizeof(buff));
 }
 /***************************************************************************************************************/
-static uint8_t ds3231_read_register(uint8_t register_address) 
+static uint8_t read_register(uint8_t register_address) 
 {
     unsigned char value = 0;
     i2c_start();
@@ -97,7 +99,7 @@ static uint8_t ds3231_read_register(uint8_t register_address)
     return value;
 }
 /***************************************************************************************************************/
-static void ds3231_write_register(uint8_t register_address, uint8_t data) 
+static void write_register(uint8_t register_address, uint8_t data) 
 {
     i2c_start();
     i2c_write(DS3231_I2C_ADDR_WRITE);
@@ -106,7 +108,7 @@ static void ds3231_write_register(uint8_t register_address, uint8_t data)
     i2c_stop();
 }
 /***************************************************************************************************************/
-static void ds3231_write_bytes(uint8_t register_address, uint8_t *buffer , uint8_t length) 
+static void write_bytes(uint8_t register_address, uint8_t *buffer , uint8_t length) 
 {
     i2c_start();
     i2c_write(DS3231_I2C_ADDR_WRITE);
@@ -118,7 +120,7 @@ static void ds3231_write_bytes(uint8_t register_address, uint8_t *buffer , uint8
     i2c_stop();
 }
 /***************************************************************************************************************/
-static void ds3231_read_bytes(uint8_t register_address, uint8_t *buffer, uint8_t length) 
+static void read_bytes(uint8_t register_address, uint8_t *buffer, uint8_t length) 
 {
     i2c_start();
     i2c_write(DS3231_I2C_ADDR_WRITE);
